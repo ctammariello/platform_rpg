@@ -7,7 +7,6 @@ public class PlayerControllerScript : MonoBehaviour
     public float moveSpeed;
     public float jumpHeight;
 
-    Transform myTrans;
     Rigidbody2D myBody;
 
     public Transform groundCheck;
