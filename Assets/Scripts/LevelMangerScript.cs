@@ -7,16 +7,11 @@ public class LevelMangerScript : MonoBehaviour {
 	public static LevelMangerScript levelManager;
 	private PlayerControllerScript player;
 
-	void Awake (){
+    void Awake (){
 		levelManager = this;
 	}
 	void Start () {
 		player = FindObjectOfType<PlayerControllerScript>();
-	}
-
-
-	void Update () {
-
 	}
 
 	public void RespawnPlayer(){
