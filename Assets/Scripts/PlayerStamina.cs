@@ -6,7 +6,7 @@ public class PlayerStamina : MonoBehaviour {
 
     // Use this for initialization
     public int startingStamina = 100;    // base starting health
-    private double staminaPerSec = 20;
+    private double staminaPerSec = 1;
     private int currentStamina;
     public Slider staminaSlider;         // Reference to the UI's health bar.
 
@@ -35,7 +35,7 @@ public class PlayerStamina : MonoBehaviour {
     {
         while (true)
         {
-            yield return new WaitForSeconds(1.0F);
+            yield return new WaitForSeconds(0.05F);
             if (currentStamina < startingStamina)
             {
                 //TODO FIX THIS CASTING. This will round stamina per sec if it's a decimal.
