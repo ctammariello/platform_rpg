@@ -17,6 +17,20 @@ public class PlayerControllerScript : MonoBehaviour
     private bool doubleJump = false;
 
     PlayerStamina stamina;
+    AttributeManager attributes;
+
+    void Awake()
+    {
+        attributes = GetComponent<AttributeManager>();
+        int agility = attributes.getAgility();
+        //int brawn =attributes.getBrawn();
+        moveSpeed = moveSpeed + (0.1f * (float)agility);
+        //TODO ATTACK SPEED
+        //attackSpeed = attackSpeed + (0.1f * (float)agility);
+
+        //TODO ATTACK DAMAGE (what script will this live in?)
+        //attackDamage = attackDamage + brawn;
+    }
 
     void Start()
     {

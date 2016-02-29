@@ -5,8 +5,8 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour {
 
     // Use this for initialization
-    public int startingHealth = 100;    // base starting health
-    private int currentHealth;
+    public float startingHealth = 100f;    // base starting health
+    private float currentHealth;
     public Slider healthSlider;         // Reference to the UI's health bar.
     public Image damageImage;           // Reference to the UI's damage overlay that will flash on damage taken
     public float flashSpeed = 5f;                               // The speed the damageImage will fade at.
@@ -15,12 +15,16 @@ public class PlayerHealth : MonoBehaviour {
     private bool isDead = false;
     private bool isDot = false;
 
+    private float damageReduction = 0.0F;
+
     AttributeManager attributes;
     void Awake () {
         attributes = GetComponent<AttributeManager>();
-        startingHealth += attributes.getBrawn() * 10;   //Mulitply Brawn attribute by 10 to determine starting health. Add to starting health.
+        startingHealth += attributes.getBrawn();   //Mulitply Brawn attribute by 10 to determine starting health. Add to starting health.
         healthSlider.maxValue = startingHealth;
         currentHealth = startingHealth;
+        healthSlider.value = startingHealth;
+        damageReduction = attributes.getBrawn() * .01F;
 	}
 
 	// Update is called once per frame
@@ -43,7 +47,7 @@ public class PlayerHealth : MonoBehaviour {
         damaged = true;
         // Reduce the current health by the damage amount.
         if(!isDead){
-          currentHealth -= amount;
+          currentHealth -= (amount - (amount * damageReduction));
         }
         // Set the health bar's value to the current health.
         healthSlider.value = currentHealth;
@@ -75,8 +79,9 @@ public class PlayerHealth : MonoBehaviour {
       isDot = true;
         while(isDot)
         {
-          currentHealth -= amount;
+          currentHealth -= (amount - (amount * damageReduction));
           healthSlider.value = currentHealth;
+          damaged = true;
           yield return new WaitForSeconds(0.5f);
           if (currentHealth <= 0 && !isDead)
           {

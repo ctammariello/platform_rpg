@@ -19,6 +19,7 @@ public class PlayerStamina : MonoBehaviour {
         startingStamina += attributes.getAgility() * 10;   //Mulitply Brawn attribute by 10 to determine starting health. Add to starting health.
         staminaPerSec += (double)attributes.getIntellect() * 0.1;
         staminaSlider.maxValue = startingStamina;
+        staminaSlider.value = startingStamina;
         currentStamina = startingStamina;
     }
 
