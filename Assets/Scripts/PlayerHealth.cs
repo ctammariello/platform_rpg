@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour {
     public Color flashColor = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
     private bool damaged = false;
     private bool isDead = false;
+    private bool isDot = false;
 
     AttributeManager attributes;
     void Awake () {
@@ -21,7 +22,7 @@ public class PlayerHealth : MonoBehaviour {
         healthSlider.maxValue = startingHealth;
         currentHealth = startingHealth;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
         if (damaged)
@@ -41,16 +42,54 @@ public class PlayerHealth : MonoBehaviour {
         // Set the damaged flag so the screen will flash.
         damaged = true;
         // Reduce the current health by the damage amount.
-        currentHealth -= amount;
+        if(!isDead){
+          currentHealth -= amount;
+        }
         // Set the health bar's value to the current health.
         healthSlider.value = currentHealth;
         // If player is dead
         if (currentHealth <= 0 && !isDead)
         {
+          isDead = true;
+          currentHealth = startingHealth;
+          healthSlider.value = currentHealth;
+          LevelMangerScript.levelManager.RespawnPlayer();
             // ... it should die.
         }
     }
+    public void TakeDotDamage(int amount)
+    {
+      if(!isDot)
+      {
+        StartCoroutine(DamageOverTime(amount));
+      }
+      isDot = true;
+    }
 
+    public void IsNotDot(){
+      isDot = false;
+    }
+
+    IEnumerator DamageOverTime(int amount)
+    {
+      isDot = true;
+        while(isDot)
+        {
+          currentHealth -= amount;
+          healthSlider.value = currentHealth;
+          yield return new WaitForSeconds(0.5f);
+          if (currentHealth <= 0 && !isDead)
+          {
+            isDead = true;
+            currentHealth = startingHealth;
+            healthSlider.value = currentHealth;
+            LevelMangerScript.levelManager.RespawnPlayer();
+              // ... it should die.
+          }
+        }
+    }
+    public void isNotDead(){
+      isDead = false;
+    }
 
 }
-
