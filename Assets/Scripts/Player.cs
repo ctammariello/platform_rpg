@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (PlayerController))]
+[RequireComponent (typeof (MovementController))]
 public class Player : MonoBehaviour {
 
     public float jumpHeight = 4;
@@ -13,12 +13,13 @@ public class Player : MonoBehaviour {
     private float moveSpeed = 15;
     private float gravity;
     private float jumpVelocity;
+    private float input;
     Vector3 velocity;
-    PlayerController controller;
+    MovementController controller;
 
     void Start()
     {
-        controller = GetComponent<PlayerController>();
+        controller = GetComponent<MovementController>();
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
     }
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour {
         {
             velocity.y = 0;
         }
-        float input = Input.GetAxisRaw("Horizontal");
+        input = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetKeyDown (KeyCode.Space) && controller.collisions.below)
         {
@@ -42,5 +43,15 @@ public class Player : MonoBehaviour {
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
         controller.move(velocity * Time.deltaTime);
+    }
+
+    public float getInput()
+    {
+        return input;
+    }
+
+    public Bounds getBounds()
+    {
+        return controller.getBounds();
     }
 }
